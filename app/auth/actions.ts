@@ -30,30 +30,41 @@ export async function signup(formData: FormData) {
 
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const handle = formData.get('handle') as string
+  const rawHandle = formData.get('handle') as string
 
-  // 1. Basic validation (should also be on client side)
+  // Clean handle: strip leading @ if present and convert to lowercase
+  const handle = (rawHandle.startsWith('@') ? rawHandle.substring(1) : rawHandle).toLowerCase().trim()
+
+  // 1. Basic validation
   if (!handle || handle.length < 3) {
     return redirect('/signup?error=Handle must be at least 3 characters')
   }
 
-  // 2. Check if handle is taken
+  if (!/^[a-zA-Z0-9_]+$/.test(handle)) {
+    return redirect('/signup?error=Handle can only contain letters, numbers, and underscores')
+  }
+
+  // 2. Check if handle is taken in the profiles table
   const { data: existingProfile } = await supabase
     .from('profiles')
     .select('handle')
     .eq('handle', handle)
-    .single()
+    .maybeSingle()
 
   if (existingProfile) {
     return redirect('/signup?error=Handle is already taken')
   }
 
-  // 3. Create user in Supabase Auth
+  // 3. Create user in Supabase Auth with handle in metadata
+  // This metadata will be picked up by the database trigger to create the profile record
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/confirm`,
+      data: {
+        handle: handle,
+      },
     },
   })
 
@@ -61,21 +72,12 @@ export async function signup(formData: FormData) {
     return redirect(`/signup?error=${encodeURIComponent(error.message)}`)
   }
 
+  // 4. Send welcome email (via Resend)
   if (data.user) {
-    // 4. Create profile record
-    const { error: profileError } = await supabase.from('profiles').insert({
-      id: data.user.id,
-      handle: handle,
-    })
-
-    if (profileError) {
-      // In a real app, you might want to cleanup the user if profile creation fails,
-      // but Supabase Auth signups are often async (email confirmation).
-      return redirect(`/signup?error=${encodeURIComponent(profileError.message)}`)
+    const emailResult = await sendWelcomeEmail(email, handle)
+    if (emailResult.error) {
+      console.warn('Welcome email failed to send, but user was created:', emailResult.error)
     }
-
-    // 5. Send welcome email (via Resend)
-    await sendWelcomeEmail(email, handle)
   }
 
   return redirect('/signup?message=Check your email to confirm your account')

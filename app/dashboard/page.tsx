@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { addBookmark, deleteBookmark, togglePublic } from './actions'
+import { addBookmark } from './actions'
 import { signOut } from '@/app/auth/actions'
-import { Trash2, Globe, Lock, LogOut, Plus, Bookmark as BookmarkIcon } from 'lucide-react'
+import { LogOut, Plus, Bookmark as BookmarkIcon } from 'lucide-react'
 import Link from 'next/link'
+import BookmarkList from '@/components/BookmarkList'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -79,20 +80,31 @@ export default async function DashboardPage() {
                     id="title"
                     required
                     placeholder="My Favorite Article"
-                    className="mt-1 block w-full rounded-xl border-zinc-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-3 bg-zinc-50 outline-none transition-all"
+                    className="mt-1 block w-full rounded-xl border-zinc-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border px-5 h-12 leading-6 text-black bg-zinc-50 outline-none transition-all placeholder:text-zinc-400"
                   />
                 </div>
                 <div>
                   <label htmlFor="url" className="block text-sm font-medium text-zinc-700">
-                    URL
+                    URL (optional)
                   </label>
                   <input
                     type="url"
                     name="url"
                     id="url"
-                    required
                     placeholder="https://example.com"
-                    className="mt-1 block w-full rounded-xl border-zinc-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-3 bg-zinc-50 outline-none transition-all"
+                    className="mt-1 block w-full rounded-xl border-zinc-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border px-5 h-12 leading-6 text-black bg-zinc-50 outline-none transition-all placeholder:text-zinc-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="note" className="block text-sm font-medium text-zinc-700">
+                    Note (optional)
+                  </label>
+                  <textarea
+                    name="note"
+                    id="note"
+                    rows={3}
+                    placeholder="Add a quick note..."
+                    className="mt-1 block w-full rounded-xl border-zinc-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-3 text-black bg-zinc-50 outline-none transition-all resize-none"
                   />
                 </div>
                 <div className="flex items-center">
@@ -118,59 +130,7 @@ export default async function DashboardPage() {
 
           {/* Bookmarks List */}
           <div className="lg:col-span-2">
-            <div className="bg-white shadow-sm border border-zinc-200 rounded-2xl overflow-hidden">
-              <ul className="divide-y divide-zinc-100">
-                {bookmarks?.length === 0 ? (
-                  <li className="p-12 text-center text-zinc-500">
-                    No bookmarks yet. Add your first one!
-                  </li>
-                ) : (
-                  bookmarks?.map((bookmark) => (
-                    <li key={bookmark.id} className="p-5 hover:bg-zinc-50 flex items-center justify-between transition-colors">
-                      <div className="flex-1 min-w-0 mr-4">
-                        <a
-                          href={bookmark.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-bold text-zinc-900 truncate block hover:text-indigo-600 transition-colors"
-                        >
-                          {bookmark.title}
-                        </a>
-                        <p className="text-xs text-zinc-400 truncate mt-1">{bookmark.url}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <form action={togglePublic.bind(null, bookmark.id, bookmark.is_public)}>
-                          <button
-                            type="submit"
-                            title={bookmark.is_public ? 'Make private' : 'Make public'}
-                            className={`p-2.5 rounded-full transition-all ${
-                              bookmark.is_public
-                                ? 'bg-green-50 text-green-600 hover:bg-green-100'
-                                : 'bg-zinc-100 text-zinc-400 hover:bg-zinc-200'
-                            }`}
-                          >
-                            {bookmark.is_public ? (
-                              <Globe className="h-4 w-4" />
-                            ) : (
-                              <Lock className="h-4 w-4" />
-                            )}
-                          </button>
-                        </form>
-                        <form action={deleteBookmark.bind(null, bookmark.id)}>
-                          <button
-                            type="submit"
-                            title="Delete"
-                            className="p-2.5 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </form>
-                      </div>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
+            <BookmarkList initialBookmarks={bookmarks || []} />
           </div>
         </div>
       </main>

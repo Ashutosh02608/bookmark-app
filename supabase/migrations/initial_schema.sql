@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS public.bookmarks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
-  url TEXT NOT NULL,
+  url TEXT,
+  note TEXT,
   is_public BOOLEAN DEFAULT false NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -53,7 +54,20 @@ CREATE POLICY "Users can delete their own bookmarks."
   ON public.bookmarks FOR DELETE
   USING ( auth.uid() = user_id );
 
--- Function to handle new user signups
--- Note: We handle profile creation in the Server Action to include the 'handle',
--- but we could also use a trigger if we had a default handle.
--- Since the plan says "Choose at Sign-up", the Server Action is better for this.
+-- Function to handle new user signups automatically
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, handle)
+  VALUES (
+    new.id,
+    COALESCE(new.raw_user_meta_data->>'handle', 'user_' || substr(new.id::text, 1, 8))
+  );
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to call the function on signup
+CREATE OR REPLACE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();

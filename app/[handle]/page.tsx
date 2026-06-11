@@ -1,19 +1,28 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { ExternalLink, Bookmark } from 'lucide-react'
+import { Bookmark } from 'lucide-react'
+import Link from 'next/link'
+import PublicBookmarkList from '@/components/PublicBookmarkList'
 
 export default async function PublicProfilePage({
   params,
 }: {
-  params: { handle: string }
+  params: Promise<{ handle: string }>
 }) {
+  const { handle: rawHandle } = await params
   const supabase = await createClient()
+
+  // Support @handle URLs by stripping the leading @ if present
+  const handle = rawHandle.startsWith('%40') 
+    ? rawHandle.substring(3) 
+    : rawHandle.startsWith('@') 
+      ? rawHandle.substring(1) 
+      : rawHandle
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('id, handle')
-    .eq('handle', params.handle)
+    .eq('handle', handle.toLowerCase())
     .single()
 
   if (!profile) {
@@ -37,35 +46,7 @@ export default async function PublicProfilePage({
           <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">@{profile.handle}</h1>
         </header>
 
-        <main className="space-y-4">
-          {bookmarks?.length === 0 ? (
-            <div className="bg-white p-12 rounded-2xl border border-zinc-200 text-center shadow-sm">
-              <p className="text-zinc-500">
-                No public bookmarks shared yet.
-              </p>
-            </div>
-          ) : (
-            bookmarks?.map((bookmark) => (
-              <a
-                key={bookmark.id}
-                href={bookmark.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block w-full bg-white p-5 rounded-2xl shadow-sm border border-zinc-200 hover:border-indigo-500 transition-all hover:shadow-md hover:-translate-y-0.5"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-lg font-bold text-zinc-900 truncate group-hover:text-indigo-600 transition-colors">
-                      {bookmark.title}
-                    </h2>
-                    <p className="text-sm text-zinc-400 truncate mt-1">{bookmark.url}</p>
-                  </div>
-                  <ExternalLink className="h-5 w-5 text-zinc-300 group-hover:text-indigo-600 flex-shrink-0 ml-4 transition-colors" />
-                </div>
-              </a>
-            ))
-          )}
-        </main>
+        <PublicBookmarkList initialBookmarks={bookmarks || []} />
 
         <footer className="mt-20 text-center flex flex-col items-center gap-4">
           <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-indigo-600 transition-colors">

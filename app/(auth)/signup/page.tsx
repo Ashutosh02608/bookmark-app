@@ -2,11 +2,12 @@ import Link from 'next/link'
 import { signup } from '@/app/auth/actions'
 import { Bookmark } from 'lucide-react'
 
-export default function SignupPage({
+export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: { error?: string; message?: string }
+  searchParams: Promise<{ error?: string; message?: string }>
 }) {
+  const { error, message } = await searchParams
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-zinc-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -22,14 +23,14 @@ export default function SignupPage({
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200">
           <form className="space-y-6" action={signup}>
-            {searchParams.error && (
+            {error && (
               <div className="rounded-xl bg-red-50 p-4 border border-red-100">
-                <div className="text-sm text-red-700">{searchParams.error}</div>
+                <div className="text-sm text-red-700">{error}</div>
               </div>
             )}
-            {searchParams.message && (
+            {message && (
               <div className="rounded-xl bg-indigo-50 p-4 border border-indigo-100">
-                <div className="text-sm text-indigo-700">{searchParams.message}</div>
+                <div className="text-sm text-indigo-700">{message}</div>
               </div>
             )}
 
@@ -50,7 +51,7 @@ export default function SignupPage({
                   type="text"
                   required
                   minLength={3}
-                  className="block flex-1 border-0 bg-transparent py-3 pl-1 text-zinc-900 placeholder:text-zinc-400 focus:ring-0 sm:text-sm sm:leading-6 outline-none"
+                  className="block flex-1 border-0 bg-transparent py-3 pl-3 pr-3 text-black placeholder:text-zinc-400 focus:ring-0 sm:text-sm sm:leading-6 outline-none"
                   placeholder="janesmith"
                 />
               </div>
@@ -71,7 +72,7 @@ export default function SignupPage({
                   autoComplete="email"
                   required
                   placeholder="you@example.com"
-                  className="block w-full rounded-xl border-zinc-200 py-3 text-zinc-900 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-zinc-50 outline-none transition-all"
+                  className="block w-full rounded-xl border-zinc-200 py-3 px-3 text-black shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-zinc-50 outline-none transition-all"
                 />
               </div>
             </div>
@@ -91,7 +92,7 @@ export default function SignupPage({
                   required
                   minLength={6}
                   placeholder="••••••••"
-                  className="block w-full rounded-xl border-zinc-200 py-3 text-zinc-900 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-zinc-50 outline-none transition-all"
+                  className="block w-full rounded-xl border-zinc-200 py-3 px-3 text-black shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-zinc-50 outline-none transition-all"
                 />
               </div>
             </div>

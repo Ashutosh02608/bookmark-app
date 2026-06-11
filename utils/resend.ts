@@ -1,24 +1,34 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function sendWelcomeEmail(email: string, handle: string) {
+  const apiKey = process.env.RESEND_API_KEY
+  
+  if (!apiKey) {
+    console.error('RESEND_API_KEY is missing from environment variables')
+    return { error: 'Missing API Key' }
+  }
+
+  const resend = new Resend(apiKey)
+
   try {
+    console.log(`Attempting to send welcome email to ${email} for @${handle}...`)
+    
     const { data, error } = await resend.emails.send({
-      from: 'Bookmarks App <onboarding@resend.dev>', // Change to your verified domain in production
+      from: 'Bookmarks App <onboarding@resend.dev>',
       to: [email],
       subject: 'Welcome to Bookmarks App!',
-      html: `<p>Hi @${handle},</p><p>Welcome to your new personal bookmarks app! You can now start adding your favorite links.</p><p>Your public profile is at: <a href="https://yourdomain.com/${handle}">yourdomain.com/${handle}</a></p>`,
+      html: `<p>Hi @${handle},</p><p>Welcome to your new personal bookmarks app! You can now start adding your favorite links.</p>`,
     })
 
     if (error) {
-      console.error('Error sending email:', error)
+      console.error('Resend API Error:', JSON.stringify(error, null, 2))
       return { error }
     }
 
+    console.log('Resend Success:', JSON.stringify(data, null, 2))
     return { data }
   } catch (error) {
-    console.error('Exception sending email:', error)
+    console.error('Resend Exception:', error)
     return { error }
   }
 }
