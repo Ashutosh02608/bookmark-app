@@ -1,0 +1,106 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "bc7743934149",
+  "session_id": "57ccb6c0-6873-4cdb-ac74-d5bf9d0f119c",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T18:35:37.4982772Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/signup/page.tsx",
+    "app/[handle]/page.tsx",
+    "app/auth/actions.ts",
+    "app/auth/confirm/route.ts",
+    "app/dashboard/actions.ts",
+    "app/dashboard/page.tsx",
+    "app/globals.css",
+    "app/page.tsx",
+    "entire-test.txt",
+    "middleware.ts",
+    "package-lock.json",
+    "package.json",
+    "supabase/migrations/initial_schema.sql",
+    "utils/resend.ts",
+    "utils/supabase/client.ts",
+    "utils/supabase/middleware.ts",
+    "utils/supabase/server.ts"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "125932facd64",
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T18:35:37.4727348Z",
+    "agent_lines": 113,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 1078,
+    "human_removed": 47,
+    "total_committed": 972,
+    "total_lines_changed": 1238,
+    "agent_percentage": 9.12762520193861,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1128,
+      "agent_lines_removed": 61
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 212,
+      "user_lines_removed": 183,
+      "agent_lines_added": 1133,
+      "agent_lines_removed": 71,
+      "user_added_per_file": {
+        "app/(auth)/login/page.tsx": 67,
+        "app/(auth)/signup/page.tsx": 88,
+        "app/[handle]/page.tsx": 17,
+        "app/dashboard/page.tsx": 40
+      },
+      "user_removed_per_file": {
+        "app/(auth)/login/page.tsx": 58,
+        "app/(auth)/signup/page.tsx": 79,
+        "app/[handle]/page.tsx": 17,
+        "app/dashboard/page.tsx": 29
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1177,
+      "agent_lines_removed": 71
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 7,
+      "user_lines_removed": 7,
+      "agent_lines_added": 1203,
+      "agent_lines_removed": 71,
+      "user_added_per_file": {
+        "app/(auth)/login/page.tsx": 2,
+        "app/(auth)/signup/page.tsx": 3,
+        "app/dashboard/page.tsx": 2
+      },
+      "user_removed_per_file": {
+        "app/(auth)/login/page.tsx": 2,
+        "app/(auth)/signup/page.tsx": 3,
+        "app/dashboard/page.tsx": 2
+      }
+    }
+  ]
+}

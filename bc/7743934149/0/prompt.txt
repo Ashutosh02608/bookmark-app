@@ -1,0 +1,68 @@
+A small personal bookmarks app — think a tiny "linktree meets pocket".
+
+Accounts — people can sign up and log in with email + password. New sign-ups receive a welcome / confirmation email.
+Bookmarks — a signed-in user can add, edit, and delete their own bookmarks. Each bookmark has a title, a URL, and a public / private flag.
+Privacy — a user's bookmarks belong to that user. One user must never be able to read, edit, or delete another user's data. Treat this as a real requirement, not a UI detail: assume people will poke at your URLs and API directly, not just click around the screen.
+Public profile — each user can claim a unique @handle. Anyone (no login) can visit /<handle> and see that user's public bookmarks only. Handles are unique — two people can't end up with the same one.
+Dashboard — once logged in, a user lands on a simple dashboard of their bookmarks. Logged-out visitors shouldn't be able to reach it.
+ Here is the features and requirement of this project. Use supabase and resend to build this project.
+
+---
+
+yes
+
+---
+
+there is some ui color pallete issue
+
+---
+
+## Error Type
+Runtime Error
+
+## Error Message
+insert or update on table "bookmarks" violates foreign key constraint "bookmarks_user_id_fkey"
+
+
+    at addBookmark (app\dashboard\actions.ts:29:11)
+    at form (<anonymous>:null:null)
+    at DashboardPage (app\dashboard\page.tsx:71:15)
+
+## Code Frame
+  27 |
+  28 |   if (error) {
+> 29 |     throw new Error(error.message)
+     |           ^
+  30 |   }
+  31 |
+  32 |   revalidatePath('/dashboard')
+
+Next.js version: 16.2.9 (Turbopack)
+
+---
+
+## Error Type
+Runtime Error
+
+## Error Message
+insert or update on table "bookmarks" violates foreign key constraint "bookmarks_user_id_fkey"
+
+
+    at addBookmark (app\dashboard\actions.ts:29:11)
+    at form (<anonymous>:null:null)
+    at DashboardPage (app\dashboard\page.tsx:71:15)
+
+## Code Frame
+  27 |
+  28 |   if (error) {
+> 29 |     throw new Error(error.message)
+     |           ^
+  30 |   }
+  31 |
+  32 |   revalidatePath('/dashboard')
+
+Next.js version: 16.2.9 (Turbopack)
+
+---
+
+add a note field in the bookmark card and make it optional, also url must be optional

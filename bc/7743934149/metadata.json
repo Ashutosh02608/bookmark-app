@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "bc7743934149",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/signup/page.tsx",
+    "app/[handle]/page.tsx",
+    "app/auth/actions.ts",
+    "app/auth/confirm/route.ts",
+    "app/dashboard/actions.ts",
+    "app/dashboard/page.tsx",
+    "app/globals.css",
+    "app/page.tsx",
+    "entire-test.txt",
+    "middleware.ts",
+    "package-lock.json",
+    "package.json",
+    "supabase/migrations/initial_schema.sql",
+    "utils/resend.ts",
+    "utils/supabase/client.ts",
+    "utils/supabase/middleware.ts",
+    "utils/supabase/server.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/bc/7743934149/0/metadata.json",
+      "transcript": "/bc/7743934149/0/full.jsonl",
+      "content_hash": "/bc/7743934149/0/content_hash.txt",
+      "prompt": "/bc/7743934149/0/prompt.txt"
+    }
+  ]
+}
