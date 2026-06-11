@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cdfd18bd3ff0",
+  "session_id": "57ccb6c0-6873-4cdb-ac74-d5bf9d0f119c",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T10:20:37.577236Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "entire-test.txt"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "11303c3a2ab1",
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T10:20:37.5649344Z",
+    "agent_lines": 1,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1,
+    "total_lines_changed": 1,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 278,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        ".gemini/agents/entire-search.md": 28,
+        ".gemini/settings.json": 141
+      }
+    }
+  ]
+}
