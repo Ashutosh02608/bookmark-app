@@ -58,11 +58,15 @@ CREATE POLICY "Users can delete their own bookmarks."
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO public.profiles (id, handle)
-  VALUES (
-    new.id,
-    COALESCE(new.raw_user_meta_data->>'handle', 'user_' || substr(new.id::text, 1, 8))
-  );
+  -- We only insert if a handle is provided in metadata.
+  -- The application validates handle existence and uniqueness at signup.
+  IF (new.raw_user_meta_data->>'handle') IS NOT NULL THEN
+    INSERT INTO public.profiles (id, handle)
+    VALUES (
+      new.id,
+      new.raw_user_meta_data->>'handle'
+    );
+  END IF;
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

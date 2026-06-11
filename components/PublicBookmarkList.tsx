@@ -111,7 +111,10 @@ export default function PublicBookmarkList({ initialBookmarks }: PublicBookmarkL
                       {bookmark.note}
                     </p>
                   )}
-                  <div className="flex items-center gap-2 mt-3 text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+                  <div 
+                    className="flex items-center gap-2 mt-3 text-[10px] text-zinc-400 uppercase tracking-widest font-bold"
+                    suppressHydrationWarning
+                  >
                     <Calendar className="h-3 w-3" />
                     {new Date(bookmark.created_at).toLocaleDateString()}
                   </div>
