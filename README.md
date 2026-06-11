@@ -4,7 +4,7 @@ A simple Next.js + Supabase bookmark manager with auth, public profiles, and boo
 
 ## Live Demo
 
-> Live URL: **INSERT_YOUR_VERCEL_URL_HERE**
+> Live URL: (https://bookmark-app-green.vercel.app/)
 
 ## GitHub Repository
 
